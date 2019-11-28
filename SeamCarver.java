@@ -69,7 +69,15 @@ public class SeamCarver {
         if (seam.length != height()) {
             throw new IllegalArgumentException();
         }
-
+        for (int i = 0; i < seam.length - 1; i++) {
+            int x1 = seam[i];
+            int x2 = seam[i + 1];
+            checkX(x1);
+            if (Math.abs(x1 - x2) > 1) {
+                throw new IllegalArgumentException();
+            }
+        }
+        checkX(seam[seam.length - 1]);
     }
 
     private void notNull(Object object) {
@@ -79,10 +87,18 @@ public class SeamCarver {
     }
 
     private void checkBounds(int x, int y) {
-        if (x < 0 || x >= width()) {
+        checkX(x);
+        checkY(y);
+    }
+
+    private void checkY(int y) {
+        if (y < 0 || y >= height()) {
             throw new IllegalArgumentException();
         }
-        if (y < 0 || y >= height()) {
+    }
+
+    private void checkX(int x) {
+        if (x < 0 || x >= width()) {
             throw new IllegalArgumentException();
         }
     }
