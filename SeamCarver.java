@@ -44,17 +44,31 @@ public class SeamCarver {
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
         notNull(seam);
+        if (height() <= 1) {
+            throw new IllegalArgumentException();
+        }
         throw new UnsupportedOperationException();
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
         notNull(seam);
+        if (width() <= 1) {
+            throw new IllegalArgumentException();
+        }
+        checkVerticalSeam(seam);
         throw new UnsupportedOperationException();
     }
 
     //  unit testing (optional)
     public static void main(String[] args) {
+
+    }
+
+    private void checkVerticalSeam(int[] seam) {
+        if (seam.length != height()) {
+            throw new IllegalArgumentException();
+        }
 
     }
 
