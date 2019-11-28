@@ -47,6 +47,7 @@ public class SeamCarver {
         if (height() <= 1) {
             throw new IllegalArgumentException();
         }
+        checkHorizontalSeam(seam);
         throw new UnsupportedOperationException();
     }
 
@@ -78,6 +79,21 @@ public class SeamCarver {
             }
         }
         checkX(seam[seam.length - 1]);
+    }
+
+    private void checkHorizontalSeam(int[] seam) {
+        if (seam.length != width()) {
+            throw new IllegalArgumentException();
+        }
+        for (int i = 0; i < seam.length - 1; i++) {
+            int y1 = seam[i];
+            int y2 = seam[i + 1];
+            checkY(y1);
+            if (Math.abs(y1 - y2) > 1) {
+                throw new IllegalArgumentException();
+            }
+        }
+        checkY(seam[seam.length - 1]);
     }
 
     private void notNull(Object object) {
