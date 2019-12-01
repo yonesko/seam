@@ -37,7 +37,7 @@ public class SeamCarver {
         int[] colorYDiff = colorYDiff(x, y);
         double xgrad = colorXDiff[0] * colorXDiff[0] + colorXDiff[1] * colorXDiff[1] + colorXDiff[2] * colorXDiff[2];
         double ygrad = colorYDiff[0] * colorYDiff[0] + colorYDiff[1] * colorYDiff[1] + colorYDiff[2] * colorYDiff[2];
-        return Math.sqrt(xgrad * xgrad + ygrad * ygrad);
+        return Math.sqrt(xgrad + ygrad);
     }
 
     private int[] colorXDiff(int x, int y) {
