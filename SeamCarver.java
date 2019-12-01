@@ -1,5 +1,7 @@
 import edu.princeton.cs.algs4.Picture;
 
+import java.awt.*;
+
 public class SeamCarver {
 
     private Picture picture;
@@ -28,7 +30,42 @@ public class SeamCarver {
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
         checkBounds(x, y);
-        throw new UnsupportedOperationException();
+        if (isBorderX(x) || isBorderY(y)) {
+            return 1000;
+        }
+        int[] colorXDiff = colorXDiff(x, y);
+        int[] colorYDiff = colorYDiff(x, y);
+        double xgrad = colorXDiff[0] * colorXDiff[0] + colorXDiff[1] * colorXDiff[1] + colorXDiff[2] * colorXDiff[2];
+        double ygrad = colorYDiff[0] * colorYDiff[0] + colorYDiff[1] * colorYDiff[1] + colorYDiff[2] * colorYDiff[2];
+        return Math.sqrt(xgrad * xgrad + ygrad * ygrad);
+    }
+
+    private int[] colorXDiff(int x, int y) {
+        Color colorNext = new Color(picture.getRGB(x + 1, y));
+        Color colorPrev = new Color(picture.getRGB(x - 1, y));
+        return new int[]{
+                colorNext.getRed() - colorPrev.getRed(),
+                colorNext.getGreen() - colorPrev.getGreen(),
+                colorNext.getBlue() - colorPrev.getBlue()
+        };
+    }
+
+    private int[] colorYDiff(int x, int y) {
+        Color colorNext = new Color(picture.getRGB(x, y + 1));
+        Color colorPrev = new Color(picture.getRGB(x, y - 1));
+        return new int[]{
+                colorNext.getRed() - colorPrev.getRed(),
+                colorNext.getGreen() - colorPrev.getGreen(),
+                colorNext.getBlue() - colorPrev.getBlue()
+        };
+    }
+
+    private boolean isBorderX(int x) {
+        return x == 0 || x == picture.width() - 1;
+    }
+
+    private boolean isBorderY(int y) {
+        return y == 0 || y == picture.height() - 1;
     }
 
     // sequence of indices for horizontal seam
