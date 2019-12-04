@@ -1,6 +1,11 @@
 import edu.princeton.cs.algs4.Picture;
+import edu.princeton.cs.algs4.Point2D;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SeamCarver {
 
@@ -75,7 +80,76 @@ public class SeamCarver {
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        throw new UnsupportedOperationException();
+        double[][] distTo = new double[width()][height()];
+        double[][] energyField = energyField();
+        Point2D[][] path = new Point2D[width()][height()];
+        for (double[] arr : distTo) {
+            Arrays.fill(arr, Double.MAX_VALUE);
+        }
+        for (int x = 0; x < width(); x++) {
+            distTo[x][1] = energyField[x][1];
+            path[x][1] = new Point2D(x, 0);
+        }
+
+        for (int y = 1; y < height() - 1; y++) {
+            for (int x = 0; x < width(); x++) {
+                for (int xAdj : findVerticalAdj(x, y)) {
+                    if (energyField[xAdj][y + 1] + energyField[x][y] < distTo[xAdj][y + 1]) {
+                        distTo[xAdj][y + 1] = energyField[xAdj][y + 1] + energyField[x][y];
+                        path[xAdj][y + 1] = new Point2D(x, y);
+                    }
+                }
+            }
+        }
+
+        double minSum = Double.MAX_VALUE;
+        int minSumIndex = -1;
+        for (int x = 0; x < width(); x++) {
+            if (distTo[x][height() - 1] < minSum) {
+                minSum = distTo[x][height() - 1];
+                minSumIndex = x;
+            }
+        }
+
+        if (minSumIndex == -1) {
+            return new int[]{};
+        }
+        path[minSumIndex][height() - 1] = new Point2D(minSumIndex, height() - 2);
+        int[] ans = new int[height()];
+
+        for (Point2D current = new Point2D(minSumIndex, height() - 1); current.y() > 0; current = path[(int) current.x()][(int) current.y()]) {
+            ans[(int) current.y()] = (int) current.x();
+        }
+
+        return ans;
+    }
+
+    private List<Integer> findVerticalAdj(int x, int y) {
+        List<Integer> ans = new LinkedList<>();
+
+        if (y >= height() - 1) {
+            return Collections.emptyList();
+        }
+
+        if (x - 1 >= 0) {
+            ans.add(x - 1);
+        }
+        ans.add(x);
+        if (x + 1 <= width() - 1) {
+            ans.add(x + 1);
+        }
+
+        return ans;
+    }
+
+    private double[][] energyField() {
+        double[][] energyField = new double[width()][height()];
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                energyField[x][y] = energy(x, y);
+            }
+        }
+        return energyField;
     }
 
     // remove horizontal seam from current picture
@@ -96,11 +170,6 @@ public class SeamCarver {
         }
         checkVerticalSeam(seam);
         throw new UnsupportedOperationException();
-    }
-
-    //  unit testing (optional)
-    public static void main(String[] args) {
-
     }
 
     private void checkVerticalSeam(int[] seam) {
@@ -156,4 +225,19 @@ public class SeamCarver {
         }
     }
 
+    //  unit testing (optional)
+    public static void main(String[] args) {
+        Picture picture = new Picture("6x5.png");
+        SeamCarver seamCarver = new SeamCarver(picture);
+        if (seamCarver.energy(3, 4) != seamCarver.energyField()[3][4]) {
+            throw new RuntimeException("energyField");
+        }
+
+        if (!seamCarver.findVerticalAdj(3, 0).equals(Arrays.asList(2, 3, 4))) {
+            throw new RuntimeException("findVerticalAdj" + seamCarver.findVerticalAdj(3, 0));
+        }
+        if (!seamCarver.findVerticalAdj(0, 0).equals(Arrays.asList(0, 1))) {
+            throw new RuntimeException("findVerticalAdj" + seamCarver.findVerticalAdj(0, 0));
+        }
+    }
 }
