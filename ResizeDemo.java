@@ -40,7 +40,7 @@ public class ResizeDemo {
             sc.removeVerticalSeam(verticalSeam);
         }
         Picture outputImg = sc.picture();
-        System.out.println("SeamCarver.sum / 1000 = " + SeamCarver.sum / 1000);
+
         StdOut.printf("new image size is %d columns by %d rows\n", sc.width(), sc.height());
 
         StdOut.println("Resizing time: " + sw.elapsedTime() + " seconds.");

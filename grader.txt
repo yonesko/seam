@@ -3,24 +3,24 @@ See the Assessment Guide for information on how to interpret this report.
 ASSESSMENT SUMMARY
 
 Compilation:  PASSED
-API:          FAILED (1 error)
+API:          PASSED
 
-Spotbugs:     No tests available for autograding.
+Spotbugs:     FAILED (1 warning)
 PMD:          PASSED
-Checkstyle:   No tests available for autograding.
+Checkstyle:   FAILED (0 errors, 8 warnings)
 
-Correctness:  No tests available for autograding.
-Memory:       No tests available for autograding.
-Timing:       No tests available for autograding.
+Correctness:  16/31 tests passed
+Memory:       0/6 tests passed
+Timing:       17/17 tests passed
 
-Aggregate score: 5.00%
+Aggregate score: 60.97%
 [Compilation: 5%, API: 5%, Spotbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
 
 ASSESSMENT DETAILS
 
 The following files were submitted:
 ----------------------------------
-9.4K Dec  6 18:30 SeamCarver.java
+9.4K Dec  6 18:32 SeamCarver.java
 
 
 ********************************************************************************
@@ -38,11 +38,1649 @@ The following files were submitted:
 Checking the APIs of your programs.
 *-----------------------------------------------------------
 SeamCarver:
-The following fields must either be removed or made private:
-  * public static double sum
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS
+********************************************************************************
+
+
+% spotbugs *.class
+*-----------------------------------------------------------
+L D FE_FLOATING_POINT_EQUALITY FE: Tests for exact floating-point equality. Because floating-point calculations may involve rounding, the calculated values may be imprecise.  At SeamCarver.java:[line 298]
+Warnings generated: 1
 
 
 ================================================================
 
 
-ABORTING: either the compilation or API test failed.
+% pmd .
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+[WARN] SeamCarver.java:26:38: The local (or parameter) variable 'picture' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:67:20: The local (or parameter) variable 'energyField' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:110:28: The local (or parameter) variable 'rgb' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:114:30: The local (or parameter) variable 'rgb' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:118:29: The local (or parameter) variable 'rgb' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:127:39: The local (or parameter) variable 'picture' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] SeamCarver.java:143: Did you mean to use 'Double.POSITIVE_INFINITY' instead of 'Double.MAX_VALUE'? [Infinity]
+[WARN] SeamCarver.java:161: Did you mean to use 'Double.POSITIVE_INFINITY' instead of 'Double.MAX_VALUE'? [Infinity]
+Checkstyle ends with 0 errors and 8 warnings.
+
+% custom checkstyle checks for SeamCarver.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of SeamCarver
+*-----------------------------------------------------------
+Running 31 total tests.
+
+Test 1a: check energy() with file inputs
+  * 6x5.png
+  * 4x6.png
+  * 10x12.png
+  * 3x7.png
+  * 5x6.png
+  * 7x3.png
+  * 7x10.png
+  * 12x10.png
+  * stripes.png
+  * diagonals.png
+  * chameleon.png
+  * HJoceanSmall.png
+  * 1x8.png
+  * 8x1.png
+  * 1x1.png
+==> passed
+
+Test 1b: check energy() with random pictures
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+  * 250-by-250
+==> passed
+
+Test 1c: check energy() with random pictures in which the RGB components
+         of each pixel are in a small range
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+  * 250-by-250
+==> passed
+
+Test 2a: check width() with file inputs
+  * 6x5.png
+  * 4x6.png
+==> passed
+
+Test 2b: check width() with random pictures
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+==> passed
+
+Test 3a: check height() with file inputs
+  * 6x5.png
+  * 4x6.png
+==> passed
+
+Test 3b: check height() with random pictures
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+==> passed
+
+Test 4a: check findVerticalSeam() with file inputs
+  * 6x5.png
+  * 4x6.png
+  * 10x12.png
+  * 3x7.png
+  * 5x6.png
+  * 7x3.png
+  * 7x10.png
+  * 12x10.png
+  * stripes.png
+  * diagonals.png
+  * chameleon.png
+  * HJoceanSmall.png
+  * 1x8.png
+  * 8x1.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    TestSeamCarver.checkFindVerticalSeam(TestSeamCarver.java:485)
+    TestSeamCarver.checkFindVerticalSeam(TestSeamCarver.java:561)
+    TestSeamCarver.test4a(TestSeamCarver.java:670)
+    TestSeamCarver.main(TestSeamCarver.java:1612)
+
+  * 1x1.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    TestSeamCarver.checkFindVerticalSeam(TestSeamCarver.java:485)
+    TestSeamCarver.checkFindVerticalSeam(TestSeamCarver.java:561)
+    TestSeamCarver.test4a(TestSeamCarver.java:671)
+    TestSeamCarver.main(TestSeamCarver.java:1612)
+
+==> FAILED
+
+Test 4b: check findVerticalSeam() with random pictures
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 8-by-8
+  * 7-by-10
+  * 250-by-250
+==> passed
+
+Test 4c: check findVerticalSeam() with random pictures in which
+         the RGB values of each pixel are in a small range
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+  * 8-by-8
+  * 250-by-250
+==> passed
+
+Test 5a: check findHorizontalSeam() with file inputs
+  * 6x5.png
+  * 4x6.png
+  * 10x12.png
+  * 3x7.png
+  * 5x6.png
+  * 7x3.png
+  * 7x10.png
+  * 12x10.png
+  * stripes.png
+  * diagonals.png
+  * chameleon.png
+  * HJoceanSmall.png
+  * 1x8.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    TestSeamCarver.checkFindHorizontalSeam(TestSeamCarver.java:521)
+    TestSeamCarver.checkFindHorizontalSeam(TestSeamCarver.java:554)
+    TestSeamCarver.test5a(TestSeamCarver.java:719)
+    TestSeamCarver.main(TestSeamCarver.java:1621)
+
+  * 8x1.png
+  * 1x1.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    TestSeamCarver.checkFindHorizontalSeam(TestSeamCarver.java:521)
+    TestSeamCarver.checkFindHorizontalSeam(TestSeamCarver.java:554)
+    TestSeamCarver.test5a(TestSeamCarver.java:721)
+    TestSeamCarver.main(TestSeamCarver.java:1621)
+
+==> FAILED
+
+Test 5b: check findHorizontalSeam() with random pictures
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+  * 8-by-8
+  * 250-by-250
+==> passed
+
+Test 5c: check findHorizontalSeam() with random pictures in which the RGB
+         components of each pixel are in a small range
+  * 4-by-6
+  * 5-by-5
+  * 6-by-4
+  * 7-by-10
+  * 8-by-8
+  * 250-by-250
+==> passed
+
+Test 6a: check removeVerticalSeam() with file inputs and optimal seams
+  * 6x5.png
+    - failed after removing vertical seam[] = { 3, 4, 3, 2, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-5 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #F349B7 #FC6577
+      #E0BFB6 #6C5952 #50C4E6 #709CB4 #8E978E
+      #75BD95 #ABE799 #95A4A8 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+    - reference picture:
+      5-by-5 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #D26D68 #FC6577
+      #E0BFB6 #6C5952 #50C4E6 #709CB4 #8E978E
+      #75BD95 #ABE799 #95A4A8 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+
+  * 10x12.png
+    - failed after removing vertical seam[] = { 5, 6, 7, 8, 7, 7, 6, 7, 6, 5, 6, 5 }
+    - student picture() does not match reference picture()
+
+  * 3x7.png
+    - failed after removing vertical seam[] = { 0, 1, 1, 1, 1, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      2-by-7 picture (RGB values given in hex)
+      #F4B5C3 #67CCE3
+      #B729B6 #337971
+      #621F81 #648956
+      #00C303 #D76964
+      #A42319 #3D8D98
+      #D59627 #23CCBE
+      #465BCF #6F9FFC
+
+    - reference picture:
+      2-by-7 picture (RGB values given in hex)
+      #BACA91 #67CCE3
+      #B729B6 #337971
+      #621F81 #648956
+      #00C303 #D76964
+      #A42319 #3D8D98
+      #D59627 #23CCBE
+      #465BCF #6F9FFC
+
+
+  * 5x6.png
+    - failed after removing vertical seam[] = { 1, 2, 2, 3, 2, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-6 picture (RGB values given in hex)
+      #F93386 #099700 #63BB8D #EE5448
+      #20175C #BC725C #7B5512 #B5D12F
+      #7544A6 #F12484 #F83C3D #A42C94
+      #187E98 #056FF4 #2D3431 #6FD24A
+      #301A83 #0A8D34 #BB3179 #E7FD61
+      #C6806C #3F5E22 #68D3FE #F645D7
+
+    - reference picture:
+      4-by-6 picture (RGB values given in hex)
+      #F93386 #00410C #63BB8D #EE5448
+      #20175C #BC725C #7B5512 #B5D12F
+      #7544A6 #F12484 #F83C3D #A42C94
+      #187E98 #056FF4 #2D3431 #6FD24A
+      #301A83 #0A8D34 #BB3179 #E7FD61
+      #C6806C #3F5E22 #68D3FE #F645D7
+
+
+  * 7x3.png
+    - failed after removing vertical seam[] = { 2, 3, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-3 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #EDD48C #9FD8F9 #6FB8CD
+      #28BF74 #0993A1 #DC6297 #8F378D #F2E178 #A17800
+      #0F0D95 #E89690 #2654F9 #AA8ED3 #669213 #A893A1
+
+    - reference picture:
+      6-by-3 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #B7B294 #EDD48C #9FD8F9 #6FB8CD
+      #28BF74 #0993A1 #DC6297 #8F378D #F2E178 #A17800
+      #0F0D95 #E89690 #2654F9 #AA8ED3 #669213 #A893A1
+
+
+  * 7x10.png
+    - failed after removing vertical seam[] = { 2, 3, 4, 3, 4, 3, 3, 2, 2, 1 }
+    - student picture() does not match reference picture()
+
+  * 12x10.png
+    - failed after removing vertical seam[] = { 6, 7, 7, 6, 6, 7, 7, 7, 8, 7 }
+    - student picture() does not match reference picture()
+
+  * stripes.png
+  * diagonals.png
+  * chameleon.png
+    - failed after removing vertical seam[] = [ suppresed (300 entries) ]
+    - student picture() does not match reference picture()
+
+  * HJoceanSmall.png
+    - failed after removing vertical seam[] = [ suppresed (285 entries) ]
+    - student picture() does not match reference picture()
+
+  * 8x1.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.removeVerticalSeam(SeamCarver.java:231)
+    TestSeamCarver.checkRemoveVerticalSeam(TestSeamCarver.java:822)
+    TestSeamCarver.checkRemoveVerticalSeam(TestSeamCarver.java:759)
+    TestSeamCarver.test6a(TestSeamCarver.java:927)
+    TestSeamCarver.main(TestSeamCarver.java:1630)
+
+==> FAILED
+
+Test 6b: check removeVerticalSeam() with random pictures and optimal seams
+  * 4-by-6
+    - failed after removing vertical seam[] = { 1, 2, 1, 1, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      3-by-6 picture (RGB values given in hex)
+      #034940 #59C5C9 #5F764C
+      #20AE57 #B1E076 #50C777
+      #33D276 #130D77 #BF0569
+      #4ADEC9 #4FE704 #D4236B
+      #6AC396 #BAEE2B #AC55B3
+      #5D547F #D7E58D #9C48C4
+
+    - reference picture:
+      3-by-6 picture (RGB values given in hex)
+      #034940 #727AAC #5F764C
+      #20AE57 #B1E076 #50C777
+      #33D276 #130D77 #BF0569
+      #4ADEC9 #4FE704 #D4236B
+      #6AC396 #BAEE2B #AC55B3
+      #5D547F #D7E58D #9C48C4
+
+
+    - failed on trial 1 of 10
+
+  * 5-by-5
+    - failed after removing vertical seam[] = { 0, 1, 1, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #5CE213 #78652E #692CCC #B2ABD8
+      #43588F #630E86 #202A66 #8DBB5D
+      #6D7975 #628BB4 #8C1302 #D62E91
+      #7DBCB0 #7F82AD #A41363 #B7CE33
+      #43D382 #8EDA17 #036912 #35F53E
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #94B4F1 #78652E #692CCC #B2ABD8
+      #43588F #630E86 #202A66 #8DBB5D
+      #6D7975 #628BB4 #8C1302 #D62E91
+      #7DBCB0 #7F82AD #A41363 #B7CE33
+      #43D382 #8EDA17 #036912 #35F53E
+
+
+    - failed on trial 1 of 10
+
+  * 6-by-4
+    - failed after removing vertical seam[] = { 2, 3, 2, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-4 picture (RGB values given in hex)
+      #C9EDF2 #1DC0C8 #B5E87A #6E4A14 #812189
+      #7A9937 #E8661D #9902D6 #060DB2 #51543B
+      #6EF056 #BEF3DB #CBD9A1 #ED79B8 #C5AD0A
+      #9CBE7B #1903AD #A420AA #6BF1B1 #56ACE9
+
+    - reference picture:
+      5-by-4 picture (RGB values given in hex)
+      #C9EDF2 #1DC0C8 #C7E661 #6E4A14 #812189
+      #7A9937 #E8661D #9902D6 #060DB2 #51543B
+      #6EF056 #BEF3DB #CBD9A1 #ED79B8 #C5AD0A
+      #9CBE7B #1903AD #A420AA #6BF1B1 #56ACE9
+
+
+    - failed on trial 1 of 10
+
+  * 7-by-10
+    - failed after removing vertical seam[] = { 3, 4, 4, 4, 5, 4, 3, 2, 1, 0 }
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 10
+
+  * 250-by-250
+    - failed after removing vertical seam[] = [ suppresed (250 entries) ]
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 2
+
+==> FAILED
+
+Test 6c: check removeVerticalSeam() with file inputs and random seams
+  * 6x5.png
+    - failed after removing vertical seam[] = { 3, 2, 1, 0, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-5 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #F349B7 #FC6577
+      #E0BFB6 #6C5952 #50C4E6 #709CB4 #8E978E
+      #75BD95 #ABE799 #95A4A8 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+    - reference picture:
+      5-by-5 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #D26D68 #FC6577
+      #E0BFB6 #6C5952 #709CB4 #B0B278 #8E978E
+      #75BD95 #95A4A8 #6B7747 #78698A #A3AEC4
+      #BB75B7 #5C9145 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+
+  * 10x12.png
+    - failed after removing vertical seam[] = { 4, 5, 5, 6, 7, 8, 7, 6, 7, 8, 9, 8 }
+    - student picture() does not match reference picture()
+
+  * 3x7.png
+    - failed after removing vertical seam[] = { 1, 2, 2, 1, 2, 2, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      2-by-7 picture (RGB values given in hex)
+      #F4B5C3 #67CCE3
+      #B729B6 #337971
+      #621F81 #648956
+      #00C303 #D76964
+      #A42319 #3D8D98
+      #D59627 #23CCBE
+      #465BCF #6F9FFC
+
+    - reference picture:
+      2-by-7 picture (RGB values given in hex)
+      #F4B5C3 #67CCE3
+      #B729B6 #8F2CF6
+      #621F81 #3315E5
+      #00C303 #D76964
+      #A42319 #1BB466
+      #D59627 #422E99
+      #E9CCE6 #465BCF
+
+
+  * 5x6.png
+    - failed after removing vertical seam[] = { 1, 0, 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-6 picture (RGB values given in hex)
+      #F93386 #099700 #63BB8D #EE5448
+      #20175C #BC725C #7B5512 #B5D12F
+      #7544A6 #F12484 #F83C3D #A42C94
+      #187E98 #056FF4 #2D3431 #6FD24A
+      #301A83 #0A8D34 #BB3179 #E7FD61
+      #C6806C #3F5E22 #68D3FE #F645D7
+
+    - reference picture:
+      4-by-6 picture (RGB values given in hex)
+      #F93386 #00410C #63BB8D #EE5448
+      #BC725C #611E38 #7B5512 #B5D12F
+      #F12484 #DEA719 #F83C3D #A42C94
+      #056FF4 #2D3431 #DBA2EB #6FD24A
+      #0A8D34 #0E6035 #BB3179 #E7FD61
+      #4DCB22 #3F5E22 #68D3FE #F645D7
+
+
+  * 7x3.png
+    - failed after removing vertical seam[] = { 4, 4, 3 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-3 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #EDD48C #9FD8F9 #6FB8CD
+      #28BF74 #0993A1 #DC6297 #8F378D #F2E178 #A17800
+      #0F0D95 #E89690 #2654F9 #AA8ED3 #669213 #A893A1
+
+    - reference picture:
+      6-by-3 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #B7B294 #9FD8F9 #6FB8CD
+      #28BF74 #0993A1 #DC6297 #9C0D3C #F2E178 #A17800
+      #0F0D95 #E89690 #60CC70 #AA8ED3 #669213 #A893A1
+
+
+  * 7x10.png
+    - failed after removing vertical seam[] = { 3, 3, 3, 3, 3, 4, 3, 4, 4, 4 }
+    - student picture() does not match reference picture()
+
+  * 12x10.png
+    - failed after removing vertical seam[] = { 5, 4, 4, 4, 4, 5, 4, 3, 4, 3 }
+    - student picture() does not match reference picture()
+
+  * stripes.png
+  * diagonals.png
+    - failed after removing vertical seam[] = { 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0 }
+    - student picture() does not match reference picture()
+
+  * chameleon.png
+    - failed after removing vertical seam[] = [ suppresed (300 entries) ]
+    - student picture() does not match reference picture()
+
+  * HJoceanSmall.png
+    - failed after removing vertical seam[] = [ suppresed (285 entries) ]
+    - student picture() does not match reference picture()
+
+  * 8x1.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.removeVerticalSeam(SeamCarver.java:231)
+    TestSeamCarver.checkRemoveVerticalSeam(TestSeamCarver.java:822)
+    TestSeamCarver.checkRemoveVerticalSeam(TestSeamCarver.java:759)
+    TestSeamCarver.test6c(TestSeamCarver.java:957)
+    TestSeamCarver.main(TestSeamCarver.java:1636)
+
+==> FAILED
+
+Test 6d: check removeVerticalSeam() with random pictures and random seams
+  * 4-by-6
+    - failed after removing vertical seam[] = { 2, 1, 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      3-by-6 picture (RGB values given in hex)
+      #BFCC84 #AB639A #47CE62
+      #7F2629 #B483FC #4B7378
+      #5A9547 #65C1E1 #793B9C
+      #03E8A0 #D4C926 #B3FA5C
+      #C29261 #E95140 #686964
+      #49B6B3 #4EE2E1 #D106FB
+
+    - reference picture:
+      3-by-6 picture (RGB values given in hex)
+      #BFCC84 #AB639A #47CE62
+      #7F2629 #A07A8D #4B7378
+      #FFD504 #65C1E1 #793B9C
+      #D4C926 #3641AD #B3FA5C
+      #E95140 #513C5C #686964
+      #109A42 #4EE2E1 #D106FB
+
+
+    - failed on trial 1 of 10
+
+  * 5-by-5
+    - failed after removing vertical seam[] = { 2, 2, 1, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #5729AB #09F3F2 #ACAE12 #2EF46C
+      #3BEC3C #8BBBF5 #A43E41 #DE5AC0
+      #78F41B #63A512 #B778B9 #F0EF65
+      #A34517 #569494 #81CC84 #57798F
+      #8211AB #0FDB61 #34DD0B #CEA055
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #5729AB #09F3F2 #ACAE12 #2EF46C
+      #3BEC3C #8BBBF5 #A43E41 #DE5AC0
+      #78F41B #B778B9 #7545FA #F0EF65
+      #A34517 #64628E #81CC84 #57798F
+      #9FB8B0 #0FDB61 #34DD0B #CEA055
+
+
+    - failed on trial 1 of 10
+
+  * 6-by-4
+    - failed after removing vertical seam[] = { 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-4 picture (RGB values given in hex)
+      #59AA62 #C5C51B #ECB5E2 #2235C0 #BAEE01
+      #A5688E #80A488 #3B23BB #2F16AA #4DCC37
+      #689CE9 #614023 #E2C97F #8D91C3 #6FA52C
+      #41B4D6 #3E1A6B #D4F49F #D416CB #192E2C
+
+    - reference picture:
+      5-by-4 picture (RGB values given in hex)
+      #C5C51B #ECB5E2 #7B0A99 #2235C0 #BAEE01
+      #80A488 #3B23BB #F4FFC5 #2F16AA #4DCC37
+      #614023 #E2C97F #8D91C3 #A158B9 #6FA52C
+      #3E1A6B #D4F49F #7A4EAE #D416CB #192E2C
+
+
+    - failed on trial 1 of 10
+
+  * 7-by-10
+    - failed after removing vertical seam[] = { 3, 4, 4, 3, 4, 3, 3, 3, 2, 1 }
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 10
+
+  * 250-by-250
+    - failed after removing vertical seam[] = [ suppresed (250 entries) ]
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 2
+
+==> FAILED
+
+Test 7a: check removeHorizontalSeam() with file inputs and optimal seams
+  * 6x5.png
+    - failed after removing horizontal seam[] = { 1, 2, 1, 2, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-4 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #F349B7 #D26D68 #8E978E
+      #E0BFB6 #6C5952 #95A4A8 #709CB4 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #5C9145 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #BCDAF4 #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+    - reference picture:
+      6-by-4 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #F349B7 #D26D68 #8E978E
+      #75BD95 #6C5952 #95A4A8 #709CB4 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #5C9145 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #BCDAF4 #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+
+  * 10x12.png
+    - failed after removing horizontal seam[] = { 8, 9, 10, 10, 10, 9, 10, 10, 9, 8 }
+    - student picture() does not match reference picture()
+
+  * 3x7.png
+    - failed after removing horizontal seam[] = { 1, 2, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      3-by-6 picture (RGB values given in hex)
+      #F4B5C3 #BACA91 #67CCE3
+      #B729B6 #8F2CF6 #648956
+      #00C303 #61C573 #D76964
+      #A42319 #1BB466 #3D8D98
+      #D59627 #422E99 #23CCBE
+      #E9CCE6 #465BCF #6F9FFC
+
+    - reference picture:
+      3-by-6 picture (RGB values given in hex)
+      #F4B5C3 #BACA91 #67CCE3
+      #621F81 #8F2CF6 #648956
+      #00C303 #61C573 #D76964
+      #A42319 #1BB466 #3D8D98
+      #D59627 #422E99 #23CCBE
+      #E9CCE6 #465BCF #6F9FFC
+
+
+  * 5x6.png
+    - failed after removing horizontal seam[] = { 2, 3, 2, 3, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-5 picture (RGB values given in hex)
+      #F93386 #099700 #00410C #63BB8D #EE5448
+      #20175C #BC725C #611E38 #7B5512 #B5D12F
+      #7544A6 #F12484 #2D3431 #F83C3D #6FD24A
+      #301A83 #0A8D34 #0E6035 #BB3179 #E7FD61
+      #C6806C #4DCB22 #3F5E22 #68D3FE #F645D7
+
+    - reference picture:
+      5-by-5 picture (RGB values given in hex)
+      #F93386 #099700 #00410C #63BB8D #EE5448
+      #20175C #BC725C #611E38 #7B5512 #B5D12F
+      #187E98 #F12484 #2D3431 #F83C3D #6FD24A
+      #301A83 #0A8D34 #0E6035 #BB3179 #E7FD61
+      #C6806C #4DCB22 #3F5E22 #68D3FE #F645D7
+
+
+  * 7x3.png
+    - failed after removing horizontal seam[] = { 0, 1, 1, 1, 1, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      7-by-2 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #B7B294 #EDD48C #9FD8F9 #A17800
+      #0F0D95 #E89690 #60CC70 #2654F9 #AA8ED3 #669213 #A893A1
+
+    - reference picture:
+      7-by-2 picture (RGB values given in hex)
+      #28BF74 #DDF8D1 #E89355 #B7B294 #EDD48C #9FD8F9 #A17800
+      #0F0D95 #E89690 #60CC70 #2654F9 #AA8ED3 #669213 #A893A1
+
+
+  * 7x10.png
+    - failed after removing horizontal seam[] = { 6, 7, 7, 7, 8, 8, 7 }
+    - student picture() does not match reference picture()
+
+  * 12x10.png
+    - failed after removing horizontal seam[] = { 7, 8, 7, 8, 7, 6, 5, 6, 6, 5, 4, 3 }
+    - student picture() does not match reference picture()
+
+  * stripes.png
+  * diagonals.png
+  * chameleon.png
+  * HJoceanSmall.png
+    - failed after removing horizontal seam[] = [ suppresed (507 entries) ]
+    - student picture() does not match reference picture()
+
+  * 1x8.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    SeamCarver.removeHorizontalSeam(SeamCarver.java:209)
+    TestSeamCarver.checkRemoveHorizontalSeam(TestSeamCarver.java:862)
+    TestSeamCarver.checkRemoveHorizontalSeam(TestSeamCarver.java:846)
+    TestSeamCarver.test7a(TestSeamCarver.java:986)
+    TestSeamCarver.main(TestSeamCarver.java:1642)
+
+==> FAILED
+
+Test 7b: check removeHorizontalSeam() with random pictures and optimal seams
+  * 4-by-6
+    - failed after removing horizontal seam[] = { 1, 2, 3, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #6A9EF0 #9F622F #28D469 #A3355F
+      #4C9544 #DBBD55 #0A21F8 #25C87E
+      #4A0C9E #3BC5BD #8F5A8E #3F5D77
+      #6AFA7C #1D4AB8 #569310 #939CE3
+      #760139 #F7C4D5 #663F82 #966122
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #6A9EF0 #9F622F #28D469 #A3355F
+      #284972 #DBBD55 #0A21F8 #25C87E
+      #4A0C9E #3BC5BD #8F5A8E #3F5D77
+      #6AFA7C #1D4AB8 #569310 #939CE3
+      #760139 #F7C4D5 #663F82 #966122
+
+
+    - failed on trial 1 of 10
+
+  * 5-by-5
+    - failed after removing horizontal seam[] = { 0, 1, 2, 1, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-4 picture (RGB values given in hex)
+      #105D2C #1A5378 #8AEB5D #999E00 #CA9B38
+      #EEE3A6 #1EC173 #D834AC #74C95F #C18002
+      #383474 #34B6DB #AD7FAA #9431C8 #769E19
+      #411B9C #C17F03 #E9A638 #AECCD4 #4E0BC8
+
+    - reference picture:
+      5-by-4 picture (RGB values given in hex)
+      #AFD394 #1A5378 #8AEB5D #999E00 #CA9B38
+      #EEE3A6 #1EC173 #D834AC #74C95F #C18002
+      #383474 #34B6DB #AD7FAA #9431C8 #769E19
+      #411B9C #C17F03 #E9A638 #AECCD4 #4E0BC8
+
+
+    - failed on trial 1 of 10
+
+  * 6-by-4
+    - failed after removing horizontal seam[] = { 0, 1, 2, 1, 2, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-3 picture (RGB values given in hex)
+      #88BC30 #A85FCC #9034C1 #3612AD #F84EA8 #4955B0
+      #316969 #7DAE65 #069499 #81BB77 #5F58B3 #BC64EB
+      #CE7FC3 #C682E8 #0088F5 #F784A1 #566DA0 #9B8836
+
+    - reference picture:
+      6-by-3 picture (RGB values given in hex)
+      #2D7F70 #A85FCC #9034C1 #3612AD #F84EA8 #4955B0
+      #316969 #7DAE65 #069499 #81BB77 #5F58B3 #BC64EB
+      #CE7FC3 #C682E8 #0088F5 #F784A1 #566DA0 #9B8836
+
+
+    - failed on trial 1 of 10
+
+  * 7-by-10
+    - failed after removing horizontal seam[] = { 3, 4, 5, 5, 5, 5, 4 }
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 10
+
+  * 250-by-250
+    - failed after removing horizontal seam[] = [ suppresed (250 entries) ]
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 2
+
+==> FAILED
+
+Test 7c: check removeHorizontalSeam() with file inputs and random seams
+  * 6x5.png
+    - failed after removing horizontal seam[] = { 0, 0, 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-4 picture (RGB values given in hex)
+      #4ED14F #3F76F7 #5CAF5F #F349B7 #D26D68 #8E978E
+      #E0BFB6 #6C5952 #95A4A8 #709CB4 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #5C9145 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #BCDAF4 #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+    - reference picture:
+      6-by-4 picture (RGB values given in hex)
+      #E0BFB6 #6C5952 #50C4E6 #709CB4 #B0B278 #8E978E
+      #75BD95 #ABE799 #95A4A8 #6B7747 #78698A #A3AEC4
+      #A3DE84 #BB75B7 #5C9145 #9E8F4F #DC4BDE #BD49D6
+      #D378AD #BCDAF4 #D66744 #A3A6F6 #4F7DF6 #D3C962
+
+
+  * 10x12.png
+    - failed after removing horizontal seam[] = { 9, 9, 10, 11, 11, 11, 10, 11, 10, 11 }
+    - student picture() does not match reference picture()
+
+  * 3x7.png
+    - failed after removing horizontal seam[] = { 2, 3, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      3-by-6 picture (RGB values given in hex)
+      #F4B5C3 #BACA91 #67CCE3
+      #B729B6 #8F2CF6 #648956
+      #00C303 #61C573 #D76964
+      #A42319 #1BB466 #3D8D98
+      #D59627 #422E99 #23CCBE
+      #E9CCE6 #465BCF #6F9FFC
+
+    - reference picture:
+      3-by-6 picture (RGB values given in hex)
+      #F4B5C3 #BACA91 #67CCE3
+      #B729B6 #8F2CF6 #337971
+      #00C303 #3315E5 #D76964
+      #A42319 #1BB466 #3D8D98
+      #D59627 #422E99 #23CCBE
+      #E9CCE6 #465BCF #6F9FFC
+
+
+  * 5x6.png
+    - failed after removing horizontal seam[] = { 5, 5, 5, 5, 4 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-5 picture (RGB values given in hex)
+      #F93386 #099700 #00410C #63BB8D #EE5448
+      #20175C #BC725C #611E38 #7B5512 #B5D12F
+      #7544A6 #F12484 #2D3431 #F83C3D #6FD24A
+      #301A83 #0A8D34 #0E6035 #BB3179 #E7FD61
+      #C6806C #4DCB22 #3F5E22 #68D3FE #F645D7
+
+    - reference picture:
+      5-by-5 picture (RGB values given in hex)
+      #F93386 #099700 #00410C #63BB8D #EE5448
+      #20175C #BC725C #611E38 #7B5512 #B5D12F
+      #7544A6 #F12484 #DEA719 #F83C3D #A42C94
+      #187E98 #056FF4 #2D3431 #DBA2EB #6FD24A
+      #301A83 #0A8D34 #0E6035 #BB3179 #F645D7
+
+
+  * 7x3.png
+    - failed after removing horizontal seam[] = { 1, 1, 1, 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      7-by-2 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #B7B294 #EDD48C #9FD8F9 #A17800
+      #0F0D95 #E89690 #60CC70 #2654F9 #AA8ED3 #669213 #A893A1
+
+    - reference picture:
+      7-by-2 picture (RGB values given in hex)
+      #EFEA87 #DDF8D1 #E89355 #9C0D3C #8F378D #F2E178 #A17800
+      #0F0D95 #E89690 #60CC70 #2654F9 #AA8ED3 #669213 #A893A1
+
+
+  * 7x10.png
+    - failed after removing horizontal seam[] = { 4, 5, 5, 5, 4, 3, 3 }
+    - student picture() does not match reference picture()
+
+  * 12x10.png
+    - failed after removing horizontal seam[] = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0 }
+    - student picture() does not match reference picture()
+
+  * stripes.png
+    - failed after removing horizontal seam[] = { 9, 9, 9, 9, 9, 8, 8, 9, 10 }
+    - student picture() does not match reference picture()
+
+  * diagonals.png
+  * chameleon.png
+  * HJoceanSmall.png
+    - failed after removing horizontal seam[] = [ suppresed (507 entries) ]
+    - student picture() does not match reference picture()
+
+  * 1x8.png
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    SeamCarver.removeHorizontalSeam(SeamCarver.java:209)
+    TestSeamCarver.checkRemoveHorizontalSeam(TestSeamCarver.java:862)
+    TestSeamCarver.checkRemoveHorizontalSeam(TestSeamCarver.java:846)
+    TestSeamCarver.test7c(TestSeamCarver.java:1015)
+    TestSeamCarver.main(TestSeamCarver.java:1648)
+
+==> FAILED
+
+Test 7d: check removeHorizontalSeam() with random pictures and random seams
+  * 4-by-6
+    - failed after removing horizontal seam[] = { 3, 2, 1, 2 }
+    - student picture() does not match reference picture()
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #65A742 #F9CC20 #91C89A #2ED141
+      #E4F353 #DAA54E #E2E891 #CAA0BE
+      #57165A #5A5DAA #FBBCA1 #78A8B3
+      #049088 #F94E57 #9A25AE #8AFD5B
+      #C2591B #4615B2 #A86625 #C6871C
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #65A742 #F9CC20 #91C89A #2ED141
+      #E4F353 #DAA54E #15E86D #2FF577
+      #57165A #0FC2F1 #FBBCA1 #78A8B3
+      #049088 #F94E57 #9A25AE #8AFD5B
+      #C2591B #4615B2 #A86625 #C6871C
+
+
+    - failed on trial 1 of 10
+
+  * 5-by-5
+    - failed after removing horizontal seam[] = { 2, 1, 0, 0, 1 }
+    - student picture() does not match reference picture()
+    - student picture:
+      5-by-4 picture (RGB values given in hex)
+      #ED7342 #B6157F #82D4A6 #B6B208 #07A4B7
+      #8E1A1E #E55150 #117EA1 #0ACDF5 #E49293
+      #A87596 #5239EC #5A73BB #9FC09D #877530
+      #67D150 #78662E #F29E90 #2FBA69 #9262E1
+
+    - reference picture:
+      5-by-4 picture (RGB values given in hex)
+      #ED7342 #B6157F #117EA1 #0ACDF5 #07A4B7
+      #30CF7E #E55150 #02AA01 #9FC09D #21AC9F
+      #A87596 #5239EC #5A73BB #F094FC #877530
+      #67D150 #78662E #F29E90 #2FBA69 #9262E1
+
+
+    - failed on trial 1 of 10
+
+  * 6-by-4
+    - failed after removing horizontal seam[] = { 0, 0, 0, 0, 0, 0 }
+    - student picture() does not match reference picture()
+    - student picture:
+      6-by-3 picture (RGB values given in hex)
+      #98F87A #89DF7F #5F6AD3 #FBF8AC #25A3C2 #498BA2
+      #0CD802 #91E785 #67E2AE #D091DA #181F1F #1E366E
+      #17F628 #67CE8F #17F9F0 #92F4DB #A73BFC #F4F49A
+
+    - reference picture:
+      6-by-3 picture (RGB values given in hex)
+      #41E8AA #FB7364 #67E2AE #D091DA #78D138 #498BA2
+      #0CD802 #91E785 #D0460C #730F9A #181F1F #1E366E
+      #17F628 #67CE8F #17F9F0 #92F4DB #A73BFC #F4F49A
+
+
+    - failed on trial 1 of 10
+
+  * 7-by-10
+    - failed after removing horizontal seam[] = { 3, 3, 3, 2, 3, 4, 4 }
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 10
+
+  * 250-by-250
+    - failed after removing horizontal seam[] = [ suppresed (250 entries) ]
+    - student picture() does not match reference picture()
+
+    - failed on trial 1 of 2
+
+==> FAILED
+
+Test 8: check energy() with invalid arguments
+  * picture = 6x5.png, call energy(-1, 4)
+    - throws wrong exception when calling energy(-1, 4)
+    - throws a java.lang.ArrayIndexOutOfBoundsException
+    - should throw a java.lang.IllegalArgumentException
+
+  * picture = 6x5.png, call energy(6, 4)
+    - throws wrong exception when calling energy(6, 4)
+    - throws a java.lang.ArrayIndexOutOfBoundsException
+    - should throw a java.lang.IllegalArgumentException
+
+  * picture = 6x5.png, call energy(5, 5)
+    - throws wrong exception when calling energy(5, 5)
+    - throws a java.lang.ArrayIndexOutOfBoundsException
+    - should throw a java.lang.IllegalArgumentException
+
+  * picture = 6x5.png, call energy(4, -1)
+    - throws wrong exception when calling energy(4, -1)
+    - throws a java.lang.ArrayIndexOutOfBoundsException
+    - should throw a java.lang.IllegalArgumentException
+
+  * picture = 6x5.png, call energy(4, 5)
+    - throws wrong exception when calling energy(4, 5)
+    - throws a java.lang.ArrayIndexOutOfBoundsException
+    - should throw a java.lang.IllegalArgumentException
+
+==> FAILED
+
+Test 9a: check removeVerticalSeam() with invalid seam
+  * picture = 10x10.png
+  * picture = 3x7.png
+  * picture = 7x3.png
+  * picture = 10x12.png
+  * picture = 12x10.png
+  * picture = 1x8.png
+  * picture = 8x1.png
+  * picture = 1x1.png
+==> passed
+
+Test 9b: check removeHorizontalSeam() with invalid seam
+  * picture = 10x10.png
+  * picture = 3x7.png
+  * picture = 7x3.png
+  * picture = 10x12.png
+  * picture = 12x10.png
+  * picture = 1x8.png
+  * picture = 8x1.png
+  * picture = 1x1.png
+==> passed
+
+Test 9c: check removeHorizontalSeam() and removeVerticalSeam() with null arguments
+  * picture = 6x5.png
+  * picture = 3x7.png
+==> passed
+
+Test 10a: check that client can mutate the Picture object that is passed to the constructor
+==> passed
+
+Test 10b: check that client can mutate the Picture object that is returned by picture()
+    - repeated calls to picture() return reference to same Picture object
+    - so, if the client mutates their copy, picture() will return wrong value
+
+==> FAILED
+
+Test 11: check constructor with null argument
+==> passed
+
+Test 12a: check intermixed calls to findHorizontalSeam(), findVerticalSeam(),
+          removeHorizontalSeam(), and removeVerticalSeam(), width(), height(),
+          energy(), and picture() made with probabilities p1, p2, p3, p4, p5,
+          p6, p7, and p8, respectively with optimal seams
+  * random 5-by-6 image with p = (0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 3 of 5
+    - picture() returns wrong value
+    - student picture:
+      5-by-5 picture (RGB values given in hex)
+      #080806 #070104 #080603 #010203 #080307
+      #090606 #020203 #080902 #090000 #020502
+      #020703 #020902 #060803 #030908 #020707
+      #020803 #030808 #070805 #000600 #000905
+      #020800 #010407 #090804 #050801 #090203
+
+    - reference picture:
+      5-by-5 picture (RGB values given in hex)
+      #080806 #070104 #080603 #010203 #080307
+      #090606 #020203 #080902 #090000 #020502
+      #020703 #020902 #060803 #030908 #020707
+      #070101 #030808 #070805 #000600 #000905
+      #020800 #010407 #090804 #050801 #090203
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       5-by-6 picture (RGB values given in hex)
+       #080806 #070104 #080603 #010203 #080307
+       #090606 #020203 #080902 #090000 #020502
+       #020703 #020902 #060803 #030908 #020707
+       #020803 #030808 #070805 #000600 #030102
+       #070101 #070007 #050606 #090108 #000905
+       #020800 #010407 #090804 #050801 #090203
+
+      carver.picture()
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 6-by-5 image with p = (0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 3 of 5
+    - picture() returns wrong value
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #040108 #020802 #060207 #030206
+      #080208 #080207 #060002 #050102
+      #010509 #080203 #010800 #080107
+      #060908 #070609 #050608 #020203
+      #000603 #040804 #050806 #050703
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #040108 #030308 #060207 #030206
+      #080208 #080207 #060002 #050102
+      #010509 #080203 #010800 #080107
+      #060908 #070609 #050608 #020203
+      #000603 #040804 #050806 #050703
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       6-by-5 picture (RGB values given in hex)
+       #040108 #020802 #060102 #030308 #060207 #030206
+       #080208 #080207 #090506 #040604 #060002 #050102
+       #010509 #030008 #040308 #080203 #010800 #080107
+       #060908 #070209 #070206 #070609 #050608 #020203
+       #020708 #040307 #000603 #040804 #050806 #050703
+
+      carver.removeVerticalSeam()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 6-by-6 image with p = (0.1, 0.1, 0.2, 0.2, 0.0, 0.0, 0.0, 0.4)
+    - failed on operation 5 of 5
+    - picture() returns wrong value
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #020706 #020601 #080606 #020506
+      #080406 #030205 #080506 #080000
+      #070504 #070408 #000507 #000003
+      #070602 #050601 #050209 #090404
+      #060202 #000706 #070906 #050607
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #020407 #040209 #080606 #020506
+      #080406 #030505 #080506 #080000
+      #070504 #000507 #030300 #000003
+      #070602 #070004 #050209 #090404
+      #030308 #000706 #070906 #050607
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       6-by-6 picture (RGB values given in hex)
+       #020706 #020601 #020407 #040209 #080606 #020506
+       #030203 #020902 #060004 #030505 #080506 #080000
+       #080406 #030205 #030803 #070605 #030300 #000109
+       #070504 #070408 #040109 #000507 #000409 #000003
+       #070602 #010809 #050601 #070004 #050209 #090404
+       #090103 #060202 #030308 #000706 #070906 #050607
+
+      carver.picture()
+      carver.removeVerticalSeam()
+      carver.removeHorizontalSeam()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 6-by-6 image with p = (0.2, 0.2, 0.0, 0.0, 0.2, 0.2, 0.2, 0.0)
+  * random 6-by-6 image with p = (0.1, 0.1, 0.2, 0.2, 0.1, 0.1, 0.1, 0.1)
+  * random 100-by-110 image with p = (0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 5 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.picture()
+      carver.picture()
+      carver.picture()
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 110-by-100 image with p = (0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 5 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.picture()
+      carver.picture()
+      carver.picture()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 110-by-110 image with p = (0.1, 0.1, 0.2, 0.2, 0.0, 0.0, 0.0, 0.4)
+    - failed on operation 5 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.picture()
+      carver.removeHorizontalSeam()
+      carver.removeVerticalSeam()
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 100-by-100 image with p = (0.2, 0.2, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2)
+  * random 110-by-110 image with p = (0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2)
+    - failed on operation 7 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.energy(x, y) for each x and y
+      carver.width()   ==> 110
+      carver.energy(x, y) for each x and y
+      carver.findVerticalSeam()
+      carver.removeHorizontalSeam()
+      carver.width()   ==> 110
+      carver.picture()
+
+==> FAILED
+
+Test 12b: check intermixed calls to findHorizontalSeam(), findVerticalSeam(),
+          removeHorizontalSeam(), and removeVerticalSeam(), width(), height(),
+          energy(), and picture() made with probabilities p1, p2, p3, p4, p5,
+          p6, p7, and p8, respectively with random seams
+  * random 5-by-6 image with p = (0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5)
+  * random 6-by-5 image with p = (0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 3 of 5
+    - picture() returns wrong value
+    - student picture:
+      4-by-5 picture (RGB values given in hex)
+      #080003 #000705 #010201 #070306
+      #030009 #050303 #030909 #070309
+      #030402 #060004 #020200 #090601
+      #020207 #010107 #040508 #020408
+      #060005 #030007 #080600 #070104
+
+    - reference picture:
+      4-by-5 picture (RGB values given in hex)
+      #080003 #000705 #000204 #070306
+      #090609 #030909 #020508 #070309
+      #060004 #080308 #020200 #090601
+      #020207 #010107 #040508 #020408
+      #080800 #030007 #080600 #070104
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       6-by-5 picture (RGB values given in hex)
+       #080003 #060604 #000705 #010201 #000204 #070306
+       #030009 #090609 #050303 #030909 #020508 #070309
+       #030402 #060004 #040108 #080308 #020200 #090601
+       #020207 #050600 #030501 #010107 #040508 #020408
+       #080800 #060200 #060005 #030007 #080600 #070104
+
+      carver.removeVerticalSeam()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 6-by-6 image with p = (0.1, 0.1, 0.2, 0.2, 0.0, 0.0, 0.0, 0.4)
+    - failed on operation 5 of 5
+    - picture() returns wrong value
+    - student picture:
+      6-by-4 picture (RGB values given in hex)
+      #020200 #070401 #060806 #080907 #090605 #090101
+      #080204 #040800 #010003 #050202 #050608 #060209
+      #090608 #010206 #060503 #040204 #000702 #000002
+      #090502 #010606 #080604 #030708 #060602 #040106
+
+    - reference picture:
+      6-by-4 picture (RGB values given in hex)
+      #080204 #040800 #010003 #080907 #090605 #000105
+      #050001 #000706 #060503 #010107 #050608 #090101
+      #000704 #080108 #010600 #040204 #000702 #000002
+      #090608 #010206 #080604 #030708 #060602 #040106
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       6-by-6 picture (RGB values given in hex)
+       #020200 #070401 #060806 #080907 #090605 #000105
+       #080204 #040800 #010003 #050202 #030609 #090101
+       #050001 #000706 #060503 #010107 #050608 #060209
+       #000704 #080108 #010600 #070802 #000702 #040205
+       #090608 #010206 #020209 #040204 #020808 #000002
+       #090502 #010606 #080604 #030708 #060602 #040106
+
+      carver.picture()
+      carver.findVerticalSeam()
+      carver.removeHorizontalSeam()
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 6-by-6 image with p = (0.2, 0.2, 0.0, 0.0, 0.2, 0.2, 0.2, 0.0)
+  * random 6-by-6 image with p = (0.1, 0.1, 0.2, 0.2, 0.1, 0.1, 0.1, 0.1)
+    - failed on operation 2 of 5
+    - picture() returns wrong value
+    - student picture:
+      6-by-5 picture (RGB values given in hex)
+      #020003 #020906 #000608 #060700 #090808 #060409
+      #040905 #030804 #030608 #030808 #060004 #000803
+      #060101 #000201 #090403 #010406 #060406 #000903
+      #020107 #040104 #060005 #040307 #040604 #030905
+      #030803 #090503 #080107 #030207 #070001 #020402
+
+    - reference picture:
+      6-by-5 picture (RGB values given in hex)
+      #020003 #020906 #000608 #060700 #090808 #060409
+      #040905 #030804 #030608 #030808 #060004 #030005
+      #060101 #000201 #090403 #010406 #050707 #000803
+      #040509 #030105 #060005 #050609 #060406 #000903
+      #030803 #040104 #080107 #040307 #040604 #030905
+
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       6-by-6 picture (RGB values given in hex)
+       #020003 #020906 #000608 #060700 #090808 #060409
+       #040905 #030804 #030608 #030808 #060004 #030005
+       #060101 #000201 #090403 #010406 #050707 #000803
+       #040509 #030105 #060005 #050609 #060406 #000903
+       #020107 #040104 #080604 #040307 #040604 #030905
+       #030803 #090503 #080107 #030207 #070001 #020402
+
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 100-by-110 image with p = (0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 2 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+  * random 110-by-100 image with p = (0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.5)
+    - failed on operation 3 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.removeVerticalSeam()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 110-by-110 image with p = (0.1, 0.1, 0.2, 0.2, 0.0, 0.0, 0.0, 0.4)
+    - failed on operation 3 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.removeHorizontalSeam()
+      carver.removeVerticalSeam()
+      carver.picture()
+
+  * random 100-by-100 image with p = (0.2, 0.2, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2)
+  * random 110-by-110 image with p = (0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2)
+    - failed on operation 4 of 100
+    - picture() returns wrong value
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      carver.energy(x, y) for each x and y
+      carver.height()  ==> 110
+      carver.removeHorizontalSeam()
+      carver.picture()
+
+==> FAILED
+
+Test 12c: check intermixed calls to findHorizontalSeam(), findVerticalSeam(),
+          removeHorizontalSeam(), and removeVerticalSeam(), width(), height(),
+          energy(), and picture() made with probabilities p1, p2, p3, p4, p5,
+          p6, p7, and p8, respectively with optimal seams
+          (tests corner cases when width = 1 or 2 and/or height = 1 or 2)
+  * random 1-by-8 image with p = (0.1, 0.1, 0.2, 0.0, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    SeamCarver.removeHorizontalSeam(SeamCarver.java:209)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1407)
+    TestSeamCarver.test12c(TestSeamCarver.java:1569)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 6 of 100
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       1-by-8 picture (RGB values given in hex)
+       #030802
+       #090700
+       #090400
+       #050806
+       #020803
+       #040702
+       #080204
+       #010106
+
+      carver.picture()
+      carver.energy(x, y) for each x and y
+      carver.energy(x, y) for each x and y
+      carver.picture()
+      carver.height()  ==> 8
+      carver.removeHorizontalSeam()
+
+  * random 8-by-1 image with p = (0.1, 0.1, 0.0, 0.2, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.removeVerticalSeam(SeamCarver.java:231)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1424)
+    TestSeamCarver.test12c(TestSeamCarver.java:1570)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 6 of 100
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       8-by-1 picture (RGB values given in hex)
+       #090000 #090704 #040402 #070409 #030908 #060906 #000204 #050403
+
+      carver.width()   ==> 8
+      carver.picture()
+      carver.energy(x, y) for each x and y
+      carver.findHorizontalSeam()
+      carver.width()   ==> 8
+      carver.removeVerticalSeam()
+
+  * random 1-by-1 image with p = (0.2, 0.2, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1375)
+    TestSeamCarver.test12c(TestSeamCarver.java:1571)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 1 of 100
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       1-by-1 picture (RGB values given in hex)
+       #030906
+
+      carver.findHorizontalSeam()
+
+  * random 2-by-8 image with p = (0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.findHorizontalSeam(SeamCarver.java:124)
+    SeamCarver.removeHorizontalSeam(SeamCarver.java:209)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1407)
+    TestSeamCarver.test12c(TestSeamCarver.java:1572)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 7 of 100
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       2-by-8 picture (RGB values given in hex)
+       #060104 #090904
+       #040409 #090304
+       #090900 #080300
+       #060609 #040207
+       #000709 #050807
+       #000904 #000306
+       #090902 #070204
+       #000008 #070007
+
+      carver.width()   ==> 2
+      carver.energy(x, y) for each x and y
+      carver.energy(x, y) for each x and y
+      carver.findHorizontalSeam()
+      carver.removeVerticalSeam()
+      carver.height()  ==> 8
+      carver.removeHorizontalSeam()
+
+  * random 8-by-2 image with p = (0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.removeVerticalSeam(SeamCarver.java:231)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1424)
+    TestSeamCarver.test12c(TestSeamCarver.java:1573)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 42 of 100
+
+  * random 2-by-2 image with p = (0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2)
+
+    java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+
+    SeamCarver.findVerticalSeam(SeamCarver.java:179)
+    SeamCarver.removeVerticalSeam(SeamCarver.java:231)
+    TestSeamCarver.checkRandomIntermixedCalls(TestSeamCarver.java:1424)
+    TestSeamCarver.test12c(TestSeamCarver.java:1574)
+    TestSeamCarver.main(TestSeamCarver.java:1681)
+
+    - failed on operation 4 of 100
+    - sequence of operations was:
+      SeamCarver carver = new SeamCarver(picture)
+      Picture picture = new Picture(...)
+
+       2-by-2 picture (RGB values given in hex)
+       #010909 #090500
+       #050105 #010000
+
+      carver.height()  ==> 2
+      carver.findVerticalSeam()
+      carver.removeHorizontalSeam()
+      carver.removeVerticalSeam()
+
+==> FAILED
+
+
+Total: 16/31 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of SeamCarver
+*-----------------------------------------------------------
+Running 6 total tests.
+
+Memory usage of a SeamCarver after removing 2 horizontal
+and 2 vertical seams from an n-by-n image.
+
+Maximum allowed memory is ~ 12 n^2 bytes.
+
+                 n       student (bytes)
+-------------------------------------------
+=> FAILED       16         6520
+=> FAILED       32        19576
+=> FAILED       64        70264
+=> FAILED      128       269952
+=> FAILED      256      1062528
+=> FAILED      512      4220544
+==> 0/6 tests passed
+
+Total: 0/6 tests passed!
+
+Estimated student memory (bytes) = 16.00 n^2 + 48.07 n + 1654.28   (R^2 = 1.000)
+
+================================================================
+
+
+
+********************************************************************************
+*  TIMING
+********************************************************************************
+
+Timing SeamCarver
+*-----------------------------------------------------------
+Reference solution is unoptimized.
+
+Running 17 total tests.
+
+Test 1: create a SeamCarver object for a given 736-by-584 picture;
+        then call findHorizontalSeam(), removeHorizontalSeam(),
+        findVerticalSeam(), removeVerticalSeam(), and picture()
+        one each; count total number of calls to methods in Picture
+  * constructor calls        = 4
+  * get()    calls per pixel = 0.0
+  * set()    calls per pixel = 0.0
+  * getRGB() calls per pixel = 5.0
+  * setRGB() calls per pixel = 4.0
+==> passed
+
+Test 2: create a SeamCarver object for a given 736-by-584 picture;
+        then call findHorizontalSeam(), removeHorizontalSeam(),
+        findVerticalSeam(), and removeVerticalSeam(), and picture();
+        once each; count total number of calls to methods in Color
+  * constructor calls per pixel = 0.0
+  * getRed()    calls per pixel = 0.0
+  * getGreen()  calls per pixel = 0.0
+  * getBlue()   calls per pixel = 0.0
+  * getRGB()    calls per pixel = 0.0
+  * equal number of calls to getRed(), getGreen(), and getBlue()
+==> passed
+
+Tests 3a-3c: time removeVerticalSeam() for a given 736-by-584 picture
+  * student   solution calls per second:      33.46
+  * reference solution calls per second:      69.60
+  * reference / student ratio:                 2.08
+
+=> passed      student <= 150.0x reference
+=> passed      student <=  15.0x reference
+=> passed      student <=   4.5x reference
+
+Tests 4a-4c: time findVerticalSeam() and removeVerticalSeam()
+             for a given 736-by-584 picture
+  * student   solution calls per second:      15.04
+  * reference solution calls per second:      11.28
+  * reference / student ratio:                 0.75
+
+=> passed      student <= 150.0x reference
+=> passed      student <=  15.0x reference
+=> passed      student <=   2.3x reference
+
+Tests 5a-5c: time removeHorizontalSeam() for a given 736-by-584 picture
+  * student   solution calls per second:      15.00
+  * reference solution calls per second:      20.18
+  * reference / student ratio:                 1.35
+
+=> passed      student <= 150.0x reference
+=> passed      student <=  15.0x reference
+=> passed      student <=   4.5x reference
+
+Tests 6a-6c: time findHorizontalSeam() and removeHorizontalSeam()
+             for a given 736-by-584 picture
+  * student   solution calls per second:       7.58
+  * reference solution calls per second:       7.26
+  * reference / student ratio:                 0.96
+
+=> passed      student <= 150.0x reference
+=> passed      student <=  15.0x reference
+=> passed      student <=   2.3x reference
+
+Tests 7a-7c: time findHorizontalSeam(), removeHorizontalSeam(), findVerticalSeam(),
+             and removeVerticalSeam() for a given 736-by-584 picture
+  * student   solution calls per second:       4.99
+  * reference solution calls per second:       4.45
+  * reference / student ratio:                 0.89
+
+=> passed      student <= 150.0x reference
+=> passed      student <=  15.0x reference
+=> passed      student <=   1.5x reference
+
+Total: 17/17 tests passed!
+
+
+================================================================
+

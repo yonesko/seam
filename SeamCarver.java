@@ -176,7 +176,9 @@ public class SeamCarver {
         for (Point2D current = new Point2D(minSumIndex, height() - 1); current.y() > 0; current = path[(int) current.x()][(int) current.y()]) {
             ans[(int) current.y()] = (int) current.x();
         }
-        ans[0] = ans[1];
+        if (height > 1) {
+            ans[0] = ans[1];
+        }
 
         return ans;
     }
@@ -293,8 +295,9 @@ public class SeamCarver {
 
     //  unit testing (optional)
     public static void main(String[] args) {
-        Picture picture = new Picture("6x5.png");
+        Picture picture = new Picture("1x1.png");
         SeamCarver seamCarver = new SeamCarver(picture);
+        seamCarver.findVerticalSeam();
         if (seamCarver.calcEnergy(3, 4) != seamCarver.energyField[3][4]) {
             throw new RuntimeException("energyField");
         }
