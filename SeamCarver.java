@@ -199,9 +199,6 @@ public class SeamCarver {
         return ans;
     }
 
-    public static double sum;
-
-
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
         notNull(seam);
