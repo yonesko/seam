@@ -147,26 +147,6 @@ public class SeamCarver {
         return ans;
     }
 
-    private void print(Point2D[][] path) {
-        System.out.println("path");
-        for (int y = 0; y < height(); y++) {
-            for (int x = 0; x < width(); x++) {
-                System.out.print(path[x][y] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    private void print(double[][] arr) {
-        System.out.println("distTo");
-        for (int y = 0; y < height(); y++) {
-            for (int x = 0; x < width(); x++) {
-                System.out.printf("%7.2f ", arr[x][y] == Double.MAX_VALUE ? 777 : arr[x][y]);
-            }
-            System.out.println();
-        }
-    }
-
     private List<Integer> findVerticalAdj(int x, int y) {
         List<Integer> ans = new LinkedList<>();
 
