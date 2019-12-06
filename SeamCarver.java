@@ -201,7 +201,17 @@ public class SeamCarver {
             throw new IllegalArgumentException();
         }
         checkVerticalSeam(seam);
-        throw new UnsupportedOperationException();
+        int[] verticalSeam = findVerticalSeam();
+        Picture newPicture = new Picture(width() - 1, height());
+
+        for (int x = 0; x < newPicture.width(); ++x) {
+            for (int y = 0; y < newPicture.height(); ++y) {
+                int newX = x >= verticalSeam[y] ? x + 1 : x;
+                newPicture.setRGB(x, y, picture.getRGB(newX, y));
+            }
+        }
+
+        picture = newPicture;
     }
 
     private void checkVerticalSeam(int[] seam) {
