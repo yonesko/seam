@@ -87,16 +87,16 @@ public class SeamCarver {
             Arrays.fill(arr, Double.MAX_VALUE);
         }
         for (int x = 0; x < width(); x++) {
-            distTo[x][1] = energyField[x][1];
-            path[x][1] = new Point2D(x, 0);
+            distTo[x][0] = energyField[x][0];
         }
 
-        for (int y = 1; y < height() - 1; y++) {
+        for (int y = 0; y < height() - 1; y++) {
             for (int x = 0; x < width(); x++) {
                 for (int xAdj : findVerticalAdj(x, y)) {
-                    if (energyField[xAdj][y + 1] + energyField[x][y] < distTo[xAdj][y + 1]) {
-                        distTo[xAdj][y + 1] = energyField[xAdj][y + 1] + energyField[x][y];
-                        path[xAdj][y + 1] = new Point2D(x, y);
+                    int yAdj = y + 1;
+                    if (energyField[xAdj][yAdj] + distTo[x][y] < distTo[xAdj][yAdj]) {
+                        distTo[xAdj][yAdj] = energyField[xAdj][yAdj] + distTo[x][y];
+                        path[xAdj][yAdj] = new Point2D(x, y);
                     }
                 }
             }
@@ -114,14 +114,35 @@ public class SeamCarver {
         if (minSumIndex == -1) {
             return new int[]{};
         }
-        path[minSumIndex][height() - 1] = new Point2D(minSumIndex, height() - 2);
+
         int[] ans = new int[height()];
 
         for (Point2D current = new Point2D(minSumIndex, height() - 1); current.y() > 0; current = path[(int) current.x()][(int) current.y()]) {
             ans[(int) current.y()] = (int) current.x();
         }
+        ans[0] = ans[1];
 
         return ans;
+    }
+
+    private void print(Point2D[][] path) {
+        System.out.println("path");
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                System.out.print(path[x][y] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private void print(double[][] arr) {
+        System.out.println("distTo");
+        for (int y = 0; y < height(); y++) {
+            for (int x = 0; x < width(); x++) {
+                System.out.printf("%7.2f ", arr[x][y] == Double.MAX_VALUE ? 777 : arr[x][y]);
+            }
+            System.out.println();
+        }
     }
 
     private List<Integer> findVerticalAdj(int x, int y) {
