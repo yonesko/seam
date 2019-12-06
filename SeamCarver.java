@@ -9,32 +9,75 @@ import java.util.List;
 public class SeamCarver {
 
     private Picture picture;
+    private double[][] energyField;
+    private int[][] rgb;
+    private int height;
+    private int width;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
         notNull(picture);
-        this.picture = new Picture(picture);
+        rgb = buildRgb(picture);
+        height = picture.height();
+        width = picture.width();
+        energyField = energyField();
+    }
+
+    private int[][] buildRgb(Picture picture) {
+        int[][] ans = new int[picture.width()][picture.height()];
+
+        for (int x = 0; x < picture.width(); x++) {
+            for (int y = 0; y < picture.height(); y++) {
+                ans[x][y] = picture.getRGB(x, y);
+            }
+        }
+
+        return ans;
     }
 
     // current picture
     public Picture picture() {
+        if (picture == null) {
+            picture = new Picture(width, height);
+            for (int x = 0; x < picture.width(); x++) {
+                for (int y = 0; y < picture.height(); y++) {
+                    picture.setRGB(x, y, rgb[x][y]);
+                }
+            }
+        }
         return picture;
     }
 
     // width of current picture
     public int width() {
-        return picture.width();
+        return width;
     }
 
     // height of current picture
     public int height() {
-        return picture.height();
+        return height;
     }
 
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
-        checkBounds(x, y);
-        if (isBorderX(x) || isBorderY(y)) {
+        return energyField[x][y];
+    }
+
+    private double[][] energyField() {
+        double[][] energyField = new double[width()][height()];
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                energyField[x][y] = calcEnergy(x, y);
+            }
+        }
+        return energyField;
+    }
+
+    private double calcEnergy(int x, int y) {
+        if (x < 0 || x >= width() || y < 0 || y >= height()) {
+            throw new IllegalArgumentException();
+        }
+        if (x == 0 || x == width() - 1 || y == 0 || y == height() - 1) {
             return 1000;
         }
         int[] colorXDiff = colorXDiff(x, y);
@@ -45,8 +88,18 @@ public class SeamCarver {
     }
 
     private int[] colorXDiff(int x, int y) {
-        int rgbNext = picture.getRGB(x + 1, y);
-        int rgbPrev = picture.getRGB(x - 1, y);
+        int rgbNext = rgb[x + 1][y];
+        int rgbPrev = rgb[x - 1][y];
+        return new int[]{
+                getRed(rgbNext) - getRed(rgbPrev),
+                getGreen(rgbNext) - getGreen(rgbPrev),
+                getBlue(rgbNext) - getBlue(rgbPrev)
+        };
+    }
+
+    private int[] colorYDiff(int x, int y) {
+        int rgbNext = rgb[x][y + 1];
+        int rgbPrev = rgb[x][y - 1];
         return new int[]{
                 getRed(rgbNext) - getRed(rgbPrev),
                 getGreen(rgbNext) - getGreen(rgbPrev),
@@ -55,33 +108,15 @@ public class SeamCarver {
     }
 
     private int getRed(int rgb) {
-        return (rgb >> 16) & 0xFF;
+        return rgb >> 16 & 0xFF;
     }
 
     private int getGreen(int rgb) {
-        return (rgb >> 8) & 0xFF;
+        return rgb >> 8 & 0xFF;
     }
 
     private int getBlue(int rgb) {
         return rgb & 0xFF;
-    }
-
-    private int[] colorYDiff(int x, int y) {
-        int rgbNext = picture.getRGB(x, y + 1);
-        int rgbPrev = picture.getRGB(x, y - 1);
-        return new int[]{
-                getRed(rgbNext) - getRed(rgbPrev),
-                getGreen(rgbNext) - getGreen(rgbPrev),
-                getBlue(rgbNext) - getBlue(rgbPrev)
-        };
-    }
-
-    private boolean isBorderX(int x) {
-        return x == 0 || x == picture.width() - 1;
-    }
-
-    private boolean isBorderY(int y) {
-        return y == 0 || y == picture.height() - 1;
     }
 
     // sequence of indices for horizontal seam
@@ -103,7 +138,6 @@ public class SeamCarver {
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
         double[][] distTo = new double[width()][height()];
-        double[][] energyField = energyField();
         Point2D[][] path = new Point2D[width()][height()];
         for (double[] arr : distTo) {
             Arrays.fill(arr, Double.MAX_VALUE);
@@ -165,15 +199,8 @@ public class SeamCarver {
         return ans;
     }
 
-    private double[][] energyField() {
-        double[][] energyField = new double[width()][height()];
-        for (int x = 0; x < width(); x++) {
-            for (int y = 0; y < height(); y++) {
-                energyField[x][y] = energy(x, y);
-            }
-        }
-        return energyField;
-    }
+    public static double sum;
+
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
@@ -193,16 +220,18 @@ public class SeamCarver {
         }
         checkVerticalSeam(seam);
         int[] verticalSeam = findVerticalSeam();
-        Picture newPicture = new Picture(width() - 1, height());
-
-        for (int x = 0; x < newPicture.width(); ++x) {
-            for (int y = 0; y < newPicture.height(); ++y) {
-                int newX = x >= verticalSeam[y] ? x + 1 : x;
-                newPicture.setRGB(x, y, picture.getRGB(newX, y));
+        picture = null;
+        for (int y = 0; y < height; y++) {
+            for (int x = verticalSeam[y]; x < width - 1; x++) {
+                rgb[x][y] = rgb[x + 1][y];
+                energyField[x][y] = energyField[x + 1][y];
             }
+            if (verticalSeam[y] - 1 >= 0) {
+                energyField[verticalSeam[y] - 1][y] = calcEnergy(verticalSeam[y] - 1, y);
+            }
+            energyField[verticalSeam[y]][y] = calcEnergy(verticalSeam[y], y);
         }
-
-        picture = newPicture;
+        width--;
     }
 
     private void checkVerticalSeam(int[] seam) {
@@ -241,11 +270,6 @@ public class SeamCarver {
         }
     }
 
-    private void checkBounds(int x, int y) {
-        checkX(x);
-        checkY(y);
-    }
-
     private void checkY(int y) {
         if (y < 0 || y >= height()) {
             throw new IllegalArgumentException();
@@ -262,7 +286,7 @@ public class SeamCarver {
     public static void main(String[] args) {
         Picture picture = new Picture("6x5.png");
         SeamCarver seamCarver = new SeamCarver(picture);
-        if (seamCarver.energy(3, 4) != seamCarver.energyField()[3][4]) {
+        if (seamCarver.calcEnergy(3, 4) != seamCarver.energyField[3][4]) {
             throw new RuntimeException("energyField");
         }
 
