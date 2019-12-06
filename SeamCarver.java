@@ -121,7 +121,7 @@ public class SeamCarver {
 
     // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
-        return new SeamCarver(transpose(picture)).findVerticalSeam();
+        return new SeamCarver(transpose(picture())).findVerticalSeam();
     }
 
     private Picture transpose(Picture picture) {
@@ -209,7 +209,19 @@ public class SeamCarver {
             throw new IllegalArgumentException();
         }
         checkHorizontalSeam(seam);
-        throw new UnsupportedOperationException();
+        int[] horizontalSeam = findHorizontalSeam();
+        picture = null;
+        for (int x = 0; x < width; x++) {
+            for (int y = horizontalSeam[x]; y < height - 1; y++) {
+                rgb[x][y] = rgb[x][y + 1];
+                energyField[x][y] = energyField[x][y + 1];
+            }
+            if (horizontalSeam[x] - 1 >= 0) {
+                energyField[x][horizontalSeam[x] - 1] = calcEnergy(x, horizontalSeam[x] - 1);
+            }
+            energyField[x][horizontalSeam[x]] = calcEnergy(x, horizontalSeam[x]);
+        }
+        height--;
     }
 
     // remove vertical seam from current picture
