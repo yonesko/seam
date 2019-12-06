@@ -54,15 +54,15 @@ public class SeamCarver {
         };
     }
 
-    public int getRed(int rgb) {
+    private int getRed(int rgb) {
         return (rgb >> 16) & 0xFF;
     }
 
-    public int getGreen(int rgb) {
+    private int getGreen(int rgb) {
         return (rgb >> 8) & 0xFF;
     }
 
-    public int getBlue(int rgb) {
+    private int getBlue(int rgb) {
         return rgb & 0xFF;
     }
 
