@@ -75,7 +75,18 @@ public class SeamCarver {
 
     // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
-        throw new UnsupportedOperationException();
+        return new SeamCarver(transpose(picture)).findVerticalSeam();
+    }
+
+    private Picture transpose(Picture picture) {
+        Picture ans = new Picture(picture.height(), picture.width());
+
+        for (int col = 0; col < this.width(); ++col) {
+            for (int row = 0; row < this.height(); ++row) {
+                ans.setRGB(row, col, picture.getRGB(col, row));
+            }
+        }
+        return ans;
     }
 
     // sequence of indices for vertical seam
