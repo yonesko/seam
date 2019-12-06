@@ -1,7 +1,6 @@
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.Point2D;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -46,22 +45,34 @@ public class SeamCarver {
     }
 
     private int[] colorXDiff(int x, int y) {
-        Color colorNext = new Color(picture.getRGB(x + 1, y));
-        Color colorPrev = new Color(picture.getRGB(x - 1, y));
+        int rgbNext = picture.getRGB(x + 1, y);
+        int rgbPrev = picture.getRGB(x - 1, y);
         return new int[]{
-                colorNext.getRed() - colorPrev.getRed(),
-                colorNext.getGreen() - colorPrev.getGreen(),
-                colorNext.getBlue() - colorPrev.getBlue()
+                getRed(rgbNext) - getRed(rgbPrev),
+                getGreen(rgbNext) - getGreen(rgbPrev),
+                getBlue(rgbNext) - getBlue(rgbPrev)
         };
     }
 
+    public int getRed(int rgb) {
+        return (rgb >> 16) & 0xFF;
+    }
+
+    public int getGreen(int rgb) {
+        return (rgb >> 8) & 0xFF;
+    }
+
+    public int getBlue(int rgb) {
+        return rgb & 0xFF;
+    }
+
     private int[] colorYDiff(int x, int y) {
-        Color colorNext = new Color(picture.getRGB(x, y + 1));
-        Color colorPrev = new Color(picture.getRGB(x, y - 1));
+        int rgbNext = picture.getRGB(x, y + 1);
+        int rgbPrev = picture.getRGB(x, y - 1);
         return new int[]{
-                colorNext.getRed() - colorPrev.getRed(),
-                colorNext.getGreen() - colorPrev.getGreen(),
-                colorNext.getBlue() - colorPrev.getBlue()
+                getRed(rgbNext) - getRed(rgbPrev),
+                getGreen(rgbNext) - getGreen(rgbPrev),
+                getBlue(rgbNext) - getBlue(rgbPrev)
         };
     }
 
