@@ -208,17 +208,16 @@ public class SeamCarver {
             throw new IllegalArgumentException();
         }
         checkHorizontalSeam(seam);
-        int[] horizontalSeam = findHorizontalSeam();
         picture = null;
         for (int x = 0; x < width; x++) {
-            for (int y = horizontalSeam[x]; y < height - 1; y++) {
+            for (int y = seam[x]; y < height - 1; y++) {
                 rgb[x][y] = rgb[x][y + 1];
                 energyField[x][y] = energyField[x][y + 1];
             }
-            if (horizontalSeam[x] - 1 >= 0) {
-                energyField[x][horizontalSeam[x] - 1] = calcEnergy(x, horizontalSeam[x] - 1);
+            if (seam[x] - 1 >= 0) {
+                energyField[x][seam[x] - 1] = calcEnergy(x, seam[x] - 1);
             }
-            energyField[x][horizontalSeam[x]] = calcEnergy(x, horizontalSeam[x]);
+            energyField[x][seam[x]] = calcEnergy(x, seam[x]);
         }
         height--;
     }
@@ -230,17 +229,16 @@ public class SeamCarver {
             throw new IllegalArgumentException();
         }
         checkVerticalSeam(seam);
-        int[] verticalSeam = findVerticalSeam();
         picture = null;
         for (int y = 0; y < height; y++) {
-            for (int x = verticalSeam[y]; x < width - 1; x++) {
+            for (int x = seam[y]; x < width - 1; x++) {
                 rgb[x][y] = rgb[x + 1][y];
                 energyField[x][y] = energyField[x + 1][y];
             }
-            if (verticalSeam[y] - 1 >= 0) {
-                energyField[verticalSeam[y] - 1][y] = calcEnergy(verticalSeam[y] - 1, y);
+            if (seam[y] - 1 >= 0) {
+                energyField[seam[y] - 1][y] = calcEnergy(seam[y] - 1, y);
             }
-            energyField[verticalSeam[y]][y] = calcEnergy(verticalSeam[y], y);
+            energyField[seam[y]][y] = calcEnergy(seam[y], y);
         }
         width--;
     }
